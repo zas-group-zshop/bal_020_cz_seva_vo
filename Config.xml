@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <!--konfiguracni soubor-->
+  <responsiveDesign enabled="true" />
+
+  <settings>
+    <FirmSessions value="user_currency" />
+    <TruncateCacheDbIsAllowed value="true" />
+    <emailLoginViaCookies value="false" />
+  </settings>
+
+  <!--connection string pro cacheDB, suggest-->
+  <cacheDB enabled="true" connectionString="Data Source=localhost;Initial Catalog=ZAS_CACHE;Persist Security Info=True;User ID=sa;Password=sqlsql;Connection Timeout=90;Connection Lifetime=0;Min Pool Size=1;Max Pool Size=10;Pooling=true;" />
+
+  <!--definice SMTP serveru-->
+  <smtpSrv pickupDirectory="" host="sevaczech-cz01b.mail.protection.outlook.com" port="25" userName="" password="" domain="" enableSsl="false"/>
+
+  <!--nastaveni odesílání mailu-->
+  <sendingMail>
+    <errorMail enabled="true" />
+  </sendingMail>
+
+  <!--definice mailovych adres type=to,bcc,cc-->
+  <mailAddress>
+    <!--sender muze byt pouze jeden -->
+    <errorSenderAddress address="zshop@seva-czech.cz" name="" />
+    <!--from muze byt pouze jeden (vetsinou stejne jako sender, pokud neni uvedeno, pouzije se sender)-->
+    <errorFromAddress address="zshop@seva-czech.cz" name="" />
+
+    <!--adres muze byt N-->
+    <errorAddress type="to" address="sd.ict@benesalat.cz" name="sd.ict@benesalat.cz" />
+    <errorAddress type="to" address="jiriz@zasgroup.cz" name="jiriz@zasgroup.cz" />
+    <errorAddress type="to" address="piovarci@icloud.com" name="piovarci@icloud.com" />
+  </mailAddress>
+  
+  <!--definice IP adres, pro zobrazovani logu-->
+  <ipAddressForLog>
+    <ipAddress value="46.227.168.82" />
+    <ipAddress value="195.189.1.20" />
+  </ipAddressForLog>
+
+  <!--definice zda-li se maji nacitat BASIC_PARAMS vzdy, nebo jen jednou-->
+  <alwaysReadParams value="true" />
+
+  <!--definice zda-li se maji nacitat BASIC_PARAMS vzdy, nebo jen jednou-->
+  <communicationIsLogging value="false" />
+
+  <!--identifikace souboru pro vodoznak-->
+  <waterMark enabled="without_png" file="/App_Data/watermark.bmp" />
+
+  <!--definice záznamů pro řazení (pokud je zde neco uvedeno, celá sekce má přednost, před standardním config)-->
+  <sortItems>
+    <!--pokud je name a value prazdné, nebude se do řazení ze standardního config generovat nic (pouze řazení dle přidaných sloupců v Karatu, pokud je definováno)-->
+    <sortItem name="Doporučujeme" value="nomen.zshop_razeni_web desc, nomen.nazev asc" type="tip" />
+    <sortItem name="SortByName" value="nomen.nazev asc" type="name" />
+    <sortItem name="SortByNameDesc" value="nomen.nazev desc" type="name" />
+    <sortItem name="SortByPrice" value="cena asc" type="price" />
+    <sortItem name="SortByPriceDesc" value="cena desc" type="price" />
+  </sortItems>
+
+  <!--definice záznamů pro počet záznamů na stránce-->
+  <resultCountItems>
+    <resultCountItem name="9" value="9" />
+    <resultCountItem name="18" value="18" />
+    <resultCountItem name="36" value="36" />
+    <resultCountItem name="ResultCountAll" value="9999" />
+  </resultCountItems>
+
+  <BasketForNonRegistredUser>
+    <!--pokud je value=true a je uveden command, posila se kazde vlozeni do kosiku agentovi at si s tim neco treba udela na firemni urovni-->
+    <sendToKarat value="false" command="SET_BASKET_ITEM_NOUSER" />
+  </BasketForNonRegistredUser>
+
+  <!--definice routovaci tabulky ... doplňuje (type=Add) nebo přepisuje (type=Replace) standardní-->
+  <routingTable type="Add">
+    <route VirtualPath="~/ZASshopPage.aspx" >
+      <url ID="SpecialPageWithControls"   DynamicUrl="vista/{Id}/{*PageParams}" />
+    </route>
+    <route VirtualPath="~/App_Firma/catalogue/default.aspx" >
+      <url ID="Catalog"   DynamicUrl="catalogue" />
+    </route>
+    <route VirtualPath="~/App_Firma/App_Pages/soutez.aspx" >
+      <url ID="Soutez"   DynamicUrl="soutez" />
+    </route>
+  </routingTable>
+
+  <!--definice pro zobrazeni/skryti ovladacich prvku na Master.Page-->
+  <MasterPageControlsSettings>
+    <MasterPageFile path="~/App_Firma/App_Pages/ZASshop.Master" />
+    <FullTextSearch enabled="true" visible="true" />
+    <LanguageSelector enabled="true" visible="false" />
+    <LoginDialog enabled="true" visible="true" />
+    <Registration enabled="true" visible="true" />
+    <Basket enabled="true" visible="true" />
+    <MainMenu enabled="true" visible="true" />
+    <SiteMap enabled="true" visible="true" />
+    <LeftPanel enabled="true" visible="true" unvisibleForPages="Home,Default,OrderDetail,ProductDetail, Basket,CreateOrderPage,AccountSettings,AddressesList,AdministrationPage,AdministrationUsers,BranchesAndContacts,CreateNewOrderPage,CustomerPage,Home,ChangePasswordPage,InvoicesList,LoginPage,LostData,ManufacturersPage,Basket,RegistrationPage,ResetPassword,ShoppingList,ZASshopPage" />
+    <RightPanel enabled="true" visible="true" />
+    <CustomFooter enabled="true" visible="true" />
+    <CustomProfilePage enabled="true" />
+    <BonusInfo visible="false" />
+  </MasterPageControlsSettings>
+
+  <!--definice pro stromove struktury-->
+  <treeDefinition>
+    <MainTree defaultDepth="2" maxDepth="4" />
+  </treeDefinition>
+
+  <!--definice pro zobrazeni/skryti ovladacich prvku na seznamu produktů-->
+  <ProductListControlsSettings>
+    <CustomSearch enabled="true" visible="false" showAllCategories="true" /> <!--pokročilé vyhledávání-->
+    <ManufacturerSelect type="cbx" selectAllText="Věk" /> <!--určuje typ ovládacího prvku pro filtrování dle výrobců. možnosti: cbx=checkboxy (default), ddb=dropdownlist -->
+    <Compare enabled="false" />
+    <Signpost enabled="false" />
+    <SortPaging visible="true" defaultSortValue="nomen.zshop_razeni_web desc, nomen.nazev asc"/> <!--zobrazovat sekci s řazením, počtem položek na stránce a stránkováním a definuje výchozí hodnotu pro řazení (prefix. je vždy data.)-->
+    <ProductListTypeEnabled catalog="enabled" picture="disabled" table="enabled" />
+  </ProductListControlsSettings>
+
+  <!--definice pro zobrazeni/skryti ovladacich prvku na detailu produktů-->
+  <ProductDetailControlsSettings>
+    <Compare enabled="true" visible="false" />
+    <ProductDetailRecommendedItems type="ProductListCatalog" />
+    <ProductDetailStock enabled="false" />
+    <ProductDetailAlt enabled="false" />
+  </ProductDetailControlsSettings>
+
+  <!--definice pro zobrazeni/skryti tlacitek pro pokrocilou praci s kosikem-->
+  <BasketActionsSettings>
+    <SendByEmail enabled="false" />
+    <ExportToXml enabled="false" />
+    <InsertItem enabled="false" /> <!--zatim nepodporovano-->
+    <ImportFromXml enabled="false" />
+    <PrintToPdf enabled="true" />
+    <AfterChangeQuantityReCalc enabled="true" />
+  </BasketActionsSettings>
+
+  <!--definice pro HomePage (parametr type=RESPONSE|TRANSFER urcuje, jakym zpusobem se ma provest presun, vychozi je transfer)-->
+  <HomePageDefinition value="Home.aspx" type="TRANSFER" description="" />
+  <PageFileNotFoundDefinition autoRedirectToHomePage="true" />
+
+  <PagesTitle>
+    <LoginPage cz="Přihlášení" en="Enter the system" />
+  </PagesTitle>
+
+  <Attachment>
+    <SaveAttachmentsInSimpleForm enabled="true" />
+  </Attachment>
+
+  <CreatingOrder>
+    <NoRightToSaveOrder text="Není možné dokončit objednávku, protože Váš účet není správně nastaven!&lt;br/&gt;&lt;br/&gt;Kontaktujte nás na eshop@vista.cz k dořešení Vaší registrace." />
+  </CreatingOrder>
+</root>

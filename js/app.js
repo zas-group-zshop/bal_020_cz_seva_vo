@@ -1,0 +1,469 @@
+function getNormalizeLinks(string){
+  string = string.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(" ","_");
+  return string;
+}
+
+$(document).ready(function() {
+
+	// Mobile menus
+	$(".js-mobile-btn").click(function(e) {
+	    e.preventDefault();
+	    $(this).toggleClass("btn-basic");
+	    $("." + $(this).data("target")).toggleClass("hidden-xs");
+	});
+
+	// Mobile categories
+	$(".left-menu > ul > li.has-submenu > span").click(function(e) {
+		e.preventDefault();
+		var parent = $(this).parent(".has-submenu");
+		if(parent.hasClass("active")) {
+			parent.removeClass("active");
+		} else {
+			parent.toggleClass("submenu-is-opened");
+		}
+	});
+
+	// Hide buttons
+	// - main description of page
+	if(!$(".main-page-description").length) {
+		$(".js-btn-description").hide();
+	}
+	if(!$(".custom-search-box").length) {
+		$(".js-btn-filter").hide();
+	}
+
+	// Cart advanced buttons
+	$(".js-btn-cart-advanced").click(function(e) {
+		e.preventDefault();
+		$(".cart-advanced-buttons").toggle();
+	});
+
+	// Admin bar 
+	$(document).ready(function() {
+	    $("#log-show-body").click(function(e) {
+	        e.preventDefault();
+	        $(".log-admin").toggleClass("log-body-opened");
+	    });
+	});
+
+	// Keyword
+	$('.keyword').bind('keyup', function (e) {
+		var key = e.keyCode || e.which;
+		if (key === 13) {
+			$(this).siblings('.button').trigger('click');
+		};
+	});
+
+	// Esc close popup
+	document.onkeydown = function (evt) {
+		evt = evt || window.event;
+		var isEscape = false;
+		if ("key" in evt) {
+			isEscape = (evt.key == "Escape" || evt.key == "Esc");
+		} else {
+			isEscape = (evt.keyCode == 27);
+		}
+		if (isEscape) {
+			$(".modal").prev().andSelf().hide();
+		}
+	};
+
+	$('#obchodni_souhlas').click( function () {
+
+		if( $('#obchodni_souhlas').is(":checked") ) {
+			$(".obchodni_souhlas_main").removeClass("error");
+		} else {
+			$(".obchodni_souhlas_main").addClass("error");
+		}
+
+	});
+
+	$(".send_basket").click( function (e) {
+			if( $('#obchodni_souhlas').is(":checked") ) {
+				return true;
+			} else {
+				e.preventDefault();
+				$(".obchodni_souhlas_main").addClass("error");
+			}
+	});
+
+  $("#leftMenu ul li ul li").each(function () {
+
+    var name = $(this).find("a").html();
+    if($(this).find("a").find("span").length) {
+      name = $(this).find("a").find("span").html();
+		}
+
+    var imageUrl = "/App_Firma/img/menu_left/" + getNormalizeLinks(name) + ".png";
+
+    $(this).find("a").css('background-image', 'url(' + imageUrl + ')').css("background-repeat","no-repeat").css("background-position","16px center").css("background-size", "auto 50px");
+  });
+
+  // checkbox
+	$(".order-addressess a").click( function () {
+		$(this).find(".orderBox").addClass("active");
+	});
+
+	if( $(nameClass).length > 0 ) {
+		$("#search input[type='text']").keyup(function () {
+			if( $(this).val().length > 0 ){
+				searchHelper.init( $(this).val() );
+			}
+		});
+
+		$("#search input[type='text']").change(function () {
+			if( $(this).val().length > 0 ){
+				searchHelper.init( $(this).val() );
+			}
+		});
+
+		var template = "<div id='iqSearch'></div>";
+		$(nameClass).append(template);
+	}
+
+	$("body").click( function () {
+		$("#iqSearch").hide();
+	})
+
+	// On resume search page add text
+	searchHelper.initResumeSearch();
+});
+
+var dicountHelper = {
+	init: function ( value, localStorageCode ) {
+		$(".message_discount").hide();
+
+		if( value ) {
+			value = value.replace(/\s/g, "");
+
+
+			if (value.indexOf(",") > 0) {
+				value = value.split(",");
+				value = dicountHelper.removeUnique(value);
+
+				$.each(value, function (el, item) {
+					dicountHelper.ajaxCall(item, localStorageCode);
+				});
+			} else {
+				dicountHelper.ajaxCall(value, localStorageCode);
+			}
+		}
+	},
+	removeUnique: function( value ) {
+		var uniqueValues = [];
+		$.each(value, function(i, el){
+			if($.inArray(el, uniqueValues) === -1) uniqueValues.push(el);
+		});
+		return uniqueValues;
+	},
+	ajaxCall: function (data_send, localStorageCode, async) {
+
+		$.ajax({
+			url: "/ZasShopServicePage.aspx/&command=CHECK_SL_KOD&sl_kod=" + data_send,
+			async: async,
+			success: function(data) {
+				data = JSON.parse(data);
+				if(data.root.is_ok == 1) {
+					var data_item = data_send.split("&")
+					data_item.forEach(function (item){
+						dicountHelper.resultFinish( item );
+					})
+				} else {
+					dicountHelper.resultFinishBadCode( data_send, localStorageCode );
+				}
+			},
+			error: function(msg) {
+				console.debug(msg);
+			},
+			complete: function() {
+
+			}
+		});
+
+	},
+	initDiscountOk: function() {
+		$(".discountOk .close").click( function () {
+			var text = $(this).parent(".discountOk").text().replace("x", "");
+
+				localStorage.setItem( "discountCode", localStorage.getItem("discountCode").replaceAll(text + " ", ""))
+				localStorage.setItem( "discountCode", localStorage.getItem("discountCode").replaceAll(text, ""))
+				$(".discountCodeContainer").val($(".discountCodeContainer").val().replace(text + ", ", "").replace(text, ""));
+
+			$(this).parent(".discountOk").remove();
+		});
+	},
+	resultFinish: function (value) {
+		let div = document.createElement("div");
+		div.setAttribute("class", "discountOk");
+		div.innerText = value;
+		let span = document.createElement("span");
+		span.setAttribute("class", "close");
+		span.innerText = "x";
+		div.append(span);
+
+		var oldValue = "";
+		if( $(".discountCodeContainer").val() ){
+			oldValue = $(".discountCodeContainer").val() + ", ";
+		}
+
+		console.log(value);
+		if(localStorage.getItem("discountCode")) {
+			if( localStorage.getItem("discountCode").indexOf(value) < 0 ){
+				localStorage.setItem("discountCode", localStorage.getItem("discountCode") + " " + value);
+			}
+		} else {
+			localStorage.setItem("discountCode", value);
+		}
+
+		$(".discountCode").val("");
+		$(".discountCodeContainer").val( oldValue + value );
+
+		$(".RegFormDiscount").append(div);
+		dicountHelper.initDiscountOk();
+	},
+	resultFinishBadCode: function (value, localStorageCode) {
+
+		if( localStorageCode ) {
+			$(".message_discount.platnost").show();
+			//localStorage.setItem("discountCode", "");
+		} else {
+			$(".message_discount.badCode").show();
+		}
+
+	}
+
+}
+
+function urlDiscount() {
+	var url_string = window.location.search;
+	var url = new URLSearchParams(url_string);
+	var sleva = url.get("sleva");
+
+	if( sleva ) {
+		localStorage.setItem("discountCode", localStorage.getItem("discountCode") + " " + sleva);
+		localStorage.setItem("discount-code", localStorage.getItem("discount-code") + " " + sleva);
+	}
+}
+
+/* Rating products */
+var rating = {
+	init: function() {
+
+		$(".rating").each(function(){
+
+			if( $(this).find(".ratingStar").length == 0 ) {
+				const count = $(this).attr("date-star");
+
+				$(this).addClass("ratingADD");
+
+				for(let i = 0; i < count; i++ ) {
+					const span = document.createElement("span");
+					span.setAttribute("class", "ratingStar emptyRatingStar numberStar" + i);
+					span.setAttribute("data-numb", i);
+					$(this).append(span);
+				}
+
+			}
+
+		});
+
+		rating.events();
+	},
+	events: function() {
+		$(".ratingStar").click( function() {
+
+			var number = parseInt($(this).attr("data-numb"));
+
+			$(this).parent(".rating").find(".ratingStar").each(function () {
+				$(this).removeClass("filledRatingStar").addClass("emptyRatingStar");
+			});
+
+			for(let i = 0; i <= number; i++ ) {
+				$(".numberStar" + i).removeClass("emptyRatingStar").addClass("filledRatingStar");
+			}
+
+			$(this).parent(".rating").find("input").val( number+1 );
+		})
+
+	}
+
+}
+
+/* IQ search list off search text in items, nomenclatures */
+var nameClass = "._iqSearch";
+var searchHelper = {
+	init: function ( search ) {
+
+		this.ajaxCall( "ft_txt=" + search, true);
+
+	},
+	initResumeSearch: function() {
+		if( $("div[data-result-count='0']").length ) {
+			this.ajaxCallTypo( $(".search-result-expr").text().replace(/"/g, "") , true);
+		}
+	},
+	finish: function( data ){
+		if(data.result[1].nomenklatura_items.nomenklatura_item.nazev) {
+			$("div[data-result-count='0']").append( "<a href='/Search/cs-CZ/0/" + data.result[1].nomenklatura_items.nomenklatura_item.nazev + "'>" + $("div[data-result-count='0']").attr("data-noresult-text").replace("{0}", data.result[1].nomenklatura_items.nomenklatura_item.nazev) + "</a>");
+		} else if(data.result[0].items.item.nazev) {
+			$("div[data-result-count='0']").append( "<a href='/Search/cs-CZ/0/" + data.result[0].items.item.nazev + "'>" + $("div[data-result-count='0']").attr("data-noresult-text").replace("{0}", data.result[0].items.item.nazev) + "</a>");
+		}
+		$(".main-page-description").removeClass("hidden-xs");
+
+	},
+	initAddText: function(){
+		$(".no_url").click( function () {
+			$("#search .keyword").val( $(this).text() ).trigger("change");
+		});
+	},
+	ajaxCallTypo: function (data_send, async) {
+
+		$.ajax({
+			url: "/ZasShopServicePage.aspx/&page-command=CHECK_SPELLING&text=" + data_send,
+			async: async,
+			success: function(data) {
+				data = JSON.parse(data);
+				if( data.root.results ) {
+					searchHelper.finish( data.root.results );
+				}
+			},
+			error: function(msg) {
+				console.debug(msg);
+			},
+			complete: function() {
+
+			}
+		});
+
+	},
+	ajaxCall: function (data_send, async) {
+
+		$.ajax({
+			url: "/ZasShopServicePage.aspx/&command=GET_FULLTEXT_RESULT&" + data_send,
+			async: async,
+			success: function(data) {
+				data = JSON.parse(data);
+				if(data.root.results) {
+					searchHelper.resultFormat(data.root.results.result);
+				}
+			},
+			error: function(msg) {
+				console.debug(msg);
+			},
+			complete: function() {
+
+			}
+		});
+
+	},
+	addItem: function( item ) {
+
+		let a = document.createElement("a");
+		let li = document.createElement("li");
+		li.textContent = item.nazev;
+
+		if( item.web_items_url ) {
+			a.setAttribute("href", item.web_items_url);
+		} else {
+			a.setAttribute("class", "no_url");
+		}
+
+		if (item.pic_url) {
+			let img = document.createElement("img");
+			img.setAttribute("src", item.pic_url);
+			img.setAttribute("class", "img");
+			a.appendChild(img);
+		}
+
+		a.append(item.nazev);
+		li.innerHTML = "";
+		li.append(a);
+
+		return li;
+
+	},
+	resultFormat: function(data) {
+
+		let div = document.createElement("div");
+		div.setAttribute('class', 'sectionAll');
+
+		$.each( data,function () {
+
+			let section = document.createElement("div");
+			section.setAttribute('class', 'section');
+
+			if( this.description ) {
+				let spanMain = document.createElement('span');
+				spanMain.setAttribute("class", "groupBlock");
+				let span = document.createElement('span');
+				span.setAttribute("class", "name");
+				span.textContent = this.description;
+				spanMain.appendChild(span);
+				section.appendChild(spanMain);
+			}
+
+			let ul = document.createElement("ul");
+			let itemsNode = false;
+			if( this.items ) {
+				itemsNode = this.items.item;
+			} else if( this.nomenklatura_items ) {
+				itemsNode = this.nomenklatura_items.nomenklatura_item;
+			}
+
+			if( itemsNode ) {
+				if( itemsNode.length) {
+					$.each( itemsNode, function ( element, item ) {
+
+						let itemNode = searchHelper.addItem(item);
+						ul.appendChild(itemNode);
+
+					});
+				} else {
+
+					let itemNode = searchHelper.addItem(itemsNode);
+					ul.appendChild(itemNode);
+
+				}
+			}
+
+			section.appendChild(ul);
+			div.appendChild(section);
+
+		})
+
+		let iqSearch = document.getElementById("iqSearch");
+		iqSearch.innerHTML = "";
+		iqSearch.append(div);
+
+		let addAll = document.createElement("div");
+		addAll.setAttribute("class", "addAll");
+		addAll.setAttribute("onclick", '$("#search .button").trigger("click");');
+		addAll.textContent = "Zobrazit všechny výsledky";
+
+		iqSearch.append(addAll);
+
+		if( $("#search input[type='text']").is(':focus') ) {
+			$("#iqSearch").show();
+		}
+
+		$(".addAll").click( function () {
+			$("#search .button").trigger("click");
+		});
+
+		searchHelper.initAddText();
+
+	}
+}
+
+function initApp(){
+
+	$(".basketContainer").html( $(".basket").html() );
+	urlDiscount();
+
+	rating.init();
+}
+/* discount code - check exist discount code */
+$(document).ready( function () {
+	initApp();
+});
+Sys.WebForms.PageRequestManager.getInstance().add_endRequest(initApp);

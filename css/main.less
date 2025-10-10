@@ -1,0 +1,500 @@
+@import 'libs/bootstrap/bootstrap';
+@import 'libs/slick/slick';
+@import 'libs/magnific';
+
+// Base
+@import 'components/base/variables.less';
+@import "font/font.less";
+@import 'components/base/base.less';
+@import 'components/base/layout.less';
+@import 'components/base/modal.less';
+@import 'components/base/login.less';
+@import 'components/base/collapsible.less';
+@import 'components/base/content.less';
+@import 'components/base/text-page.less';
+
+// Log
+@import 'components/log/log.less';
+
+// Header
+@import 'components/header/header.less';
+@import 'components/header/search.less';
+
+// Left col
+@import 'components/left-col/left-col.less';
+@import 'components/left-col/filter.less';
+
+// Product
+@import 'components/product/product-list-catalogue.less';
+@import 'components/product/product-list-picture.less';
+@import 'components/product/product-list-table.less';
+@import 'components/product/product.less';
+@import 'components/product/product-tabs.less';
+@import 'components/product/category.less';
+@import 'components/product/badge.less';
+@import 'components/product/paging.less';
+@import 'components/ajax-tabs/ajax-tabs.less';
+@import 'components/product/gallery.less';
+
+// Banners
+@import 'components/banners/banners.less';
+
+// Footer
+@import 'components/footer/footer.less';
+
+// Order
+@import 'components/order/cart.less';
+@import 'components/order/steps.less';
+@import 'components/order/order.less';
+//ulozenka zasilkovna
+@import 'components/order/packeta.less';
+
+// Customer
+@import 'components/customer/customer.less';
+
+// Boxorder
+@import 'components/boxorder/boxorder-categories.less';
+@import 'components/boxorder/boxorder.less';
+
+//loader for ares search
+@import "components/base/loader.less";
+
+//slick
+@import "components/slick/slick";
+@import "components/slick/slick-theme";
+
+body {
+  font-family: 'DaxlinePro-Light', sans-serif;
+}
+
+.headKarat {
+  position: absolute;
+}
+
+.visible-Homepage {
+  display: none !important;
+}
+[data-class-full-page="col-sm-12"].col-sm-12  {
+
+  @media screen and (min-width: @screen-md-min) {
+    .product-list-catalog .product {
+      width: 25%;
+    }
+
+    .visible-lg-block {
+      display: none !important;
+    }
+
+    .visible-Homepage {
+      display: block !important;
+    }
+  }
+}
+h1, .h1 {
+  font-family: 'DaxlinePro-Black', sans-serif;
+  color: @base-bcg;
+ // font-size: 40px;
+}
+
+h2, h3 {
+  font-family: 'DaxlinePro-Black', sans-serif;
+  color: @base-bcg;
+  font-size: 40px;
+  margin: 20px 0 20px;
+
+  span {
+    color: @secondary-bcg;
+  }
+
+}
+
+h3 {
+  font-size: 30px;
+}
+
+p {
+  color: @base-bcg;
+  font-family: 'DaxlinePro-Light', sans-serif;
+  font-size: 18px;
+
+  &.big {
+    font-size: 24px;
+  }
+}
+
+b {
+  font-family: 'DaxlinePro-Black', sans-serif;
+}
+
+em {
+  font-style: normal;
+  color: @secondary-bcg;
+}
+
+.pad_right {
+ padding-right: 30px;
+}
+
+.pad_no {
+  padding: 0;
+}
+
+.menu_users {
+
+  li {
+    display: inline-block;
+    float: left;
+    cursor: pointer;
+
+    &.basket {
+      font-family: 'DaxlinePro-ExtraBold';
+      background-size: 100% auto;
+      position: relative;
+      background: url(/App_Firma/img/basket.png) no-repeat center center;
+      width: 41px;
+      height: 35px;
+      cursor: pointer;
+
+      @media screen and (max-width: @screen-md-max) {
+        position: absolute;
+        top: 46px;
+        right: 25%;
+      }
+
+      span {
+        position: absolute;
+        background: #fff;
+        padding: 7px 6px;
+        color: #203373;
+        border-radius: 23px;
+        right: -11px;
+        font-weight: 400;
+        font-size: 16px;
+        top: 0;
+        line-height: 6px;
+      }
+    }
+
+    &.login {
+      display: inline-block;
+      float: left;
+      padding: 0 20px;
+      color: @base-color;
+      @media screen and (max-width: @screen-md-max) {
+        padding: 0 5px;
+      }
+
+      .fa {
+        padding: 10px;
+      }
+    }
+  }
+}
+.basketContainer {
+  font-family: 'DaxlinePro-ExtraBold';
+  background-size: 100% auto;
+  position: relative;
+  background: url(/App_Firma/img/basket.png) no-repeat center center;
+  width: 41px;
+  height: 35px;
+  cursor: pointer;
+
+  @media screen and (max-width: @screen-md-max) {
+    position: absolute;
+    top: 47px;
+    right: 25%;
+  }
+
+  span {
+    position: absolute;
+    background: #fff;
+    padding: 7px 6px;
+    color: #203373;
+    border-radius: 23px;
+    right: -11px;
+    font-weight: 400;
+    font-size: 16px;
+    top: 0;
+    line-height: 6px;
+  }
+}
+
+.loginBox{
+  display: none;
+  @media screen and (max-width: @screen-md-max) {
+    display: block;
+  }
+}
+
+#basketInfo {
+  display: none;
+}
+
+.home-guide-new {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 90px;
+
+  a, span {
+    height: 150px;
+    width: 180px;
+    padding: 10px 30px;
+    cursor: pointer;
+    flex: 1 0 20%;
+    text-align: left;
+    max-width: 225px;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  @media screen and (max-width: @screen-md-max) {
+    a, span {
+      height: auto;
+      width: 180px;
+      padding: 10px 5px;
+      cursor: pointer;
+      flex: 1 0 25%;
+      text-align: left;
+      max-width: 225px;
+
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
+}
+
+.left-information {
+  display: none;
+}
+
+.main_slider {
+  margin: 20px 0 90px;
+
+  .top {
+    margin-top: 40px;
+  }
+
+  .btn-basic {
+    font-family: 'DaxlinePro-Black', sans-serif;
+    padding: 10px 30px 6px;
+    font-size: 20px;
+    background: @secondary-bcg;
+    border: 1px solid @secondary-bcg;
+
+    &:hover {
+      background: @base-bcg;
+      border: 1px solid @base-bcg;
+    }
+  }
+}
+
+.btn-basic {
+
+    font-family: 'DaxlinePro-Black', sans-serif;
+    color: #fff;
+    background: @base-bcg;
+    text-transform: uppercase;
+    padding: 10px 18px 6px;
+
+    &:hover {
+      background: @secondary-bcg;
+    }
+
+}
+
+.btn-default {
+  font-family: 'DaxlinePro-Light', sans-serif;
+  color: #fff;
+  background: @base-bcg;
+  text-transform: uppercase;
+  padding: 10px 18px 6px;
+
+  &:hover {
+    background: @secondary-bcg;
+  }
+}
+
+.btn-sm {
+  padding: 10px 5px 6px;
+
+  &:hover {
+    background: @secondary-bcg;
+    border-color: @secondary-bcg;
+  }
+}
+
+.login {
+  position: relative;
+
+  &:hover {
+    .loginBox {
+      display: block;
+    }
+  }
+}
+
+.modal-desc {
+  background: @base-color;
+
+  .modal-title {
+    background: transparent;
+    color: @base-bcg;
+  }
+}
+
+hr {
+  border-top: 1px solid #e5d1b2;
+}
+
+ul.dot {
+  list-style: none;
+  line-height: 25px;
+
+  li {
+    position: relative;
+
+    &:before {
+      background: #d45f2b;
+      content: "";
+      width: 10px;
+      height: 10px;
+      display: block;
+      position: absolute;
+      left: -25px;
+      border-radius: 10px;
+      top: 4px;
+    }
+
+  }
+  &.green_dot {
+    li:before {
+      background: #7fb539;
+    }
+  }
+
+  &.red_dot {
+    li:before {
+      background: #d71920;
+    }
+  }
+
+  &.blue_dot {
+    li:before {
+      background: #0089cf;
+    }
+  }
+  &.orange_dot {
+    li:before {
+      background: #d45f2b;
+    }
+  }
+}
+
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+  text-transform: uppercase;
+  padding: 10px 18px 6px;
+
+  &:hover {
+    background: @secondary-bcg;
+  }
+}
+
+.tools {
+  position: relative;
+  max-width: 80px;
+}
+
+.row-menu {
+  position: relative;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+input:-webkit-autofill{
+  box-shadow: 0 0 0 30px #ffe9c7 inset !important;
+  -webkit-box-shadow: 0 0 0 30px #ffe9c7 inset !important;
+  -moz-box-shadow: 0 0 0 30px #ffe9c7 inset !important;
+}
+
+.btn-basic {
+  font-family: 'DaxlinePro-Black';
+  text-transform: uppercase;
+  padding: 10px 18px 6px;
+}
+
+.btn-normal {
+  font-family: 'DaxlinePro-Regular';
+  text-transform: uppercase;
+}
+
+.steps .step1 {
+  display: none;
+}
+
+@media screen and (min-width: 992px) {
+  .steps li {
+    width: 33%;
+  }
+}
+.steps .step2:before {
+  content: "1";
+}
+.steps .step3:before {
+  content: "2";
+}
+.steps .step4:before {
+  content: "3";
+}
+
+.addresses {
+  padding: 15px;
+}
+
+.obchodni_souhlas_main {
+  input {
+    cursor: pointer;
+  }
+  .error_message {
+    display: none;
+    color: darkred;
+    font-family: 'DaxlinePro-Black', sans-serif;
+  }
+
+  &.error {
+    color: darkred;
+    .error_message {
+      display: block;
+    }
+  }
+}
+
+.discountOk {
+
+  background: #7fb539;
+  top: 12px;
+
+  .close {
+    background: #7fb539;
+    padding: 0 5px 0px;
+  }
+}
+
+.checkPromo {
+  margin-left: 15px;
+  font-size: 16px;
+  font-family: 'DaxlinePro-Black',sans-serif;
+  color: #203373;
+}
