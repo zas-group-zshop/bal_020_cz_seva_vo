@@ -6,7 +6,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: webserver-vista
     defaults:
       run:
         shell: powershell
