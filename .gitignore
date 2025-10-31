@@ -5,6 +5,7 @@ certs/_popis.txt
 certs/muzo.signing.cer
 certs/muzo.signing_prod.cer
 certs/muzo.signing_test.cer
+certs/
 css/components/
 css/font/
 css/libs/
