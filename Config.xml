@@ -29,7 +29,6 @@
 
     <!--adres muze byt N-->
     <errorAddress type="to" address="sd.ict@benesalat.cz" name="sd.ict@benesalat.cz" />
-    <errorAddress type="to" address="jiriz@zasgroup.cz" name="jiriz@zasgroup.cz" />
     <errorAddress type="to" address="piovarci@icloud.com" name="piovarci@icloud.com" />
   </mailAddress>
   
